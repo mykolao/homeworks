@@ -5,15 +5,12 @@ import s from './Clock.module.css';
 
 function Clock() {
   const [timerId, setTimerId] = useState<number | undefined>(undefined);
-  // for autotests // не менять // можно подсунуть в локалСторэдж нужную дату, чтоб увидеть как она отображается
   const [date, setDate] = useState<Date>(
     new Date(restoreState('hw9-date', Date.now())),
   );
   const [show, setShow] = useState<boolean>(false);
 
   const start = () => {
-    // пишут студенты // запустить часы (должно отображаться реальное время, а не +1)
-    // сохранить ид таймера (https://learn.javascript.ru/settimeout-setinterval#setinterval)
     const id = setInterval(() => {
       setDate(new Date());
     }, 1000);
@@ -38,7 +35,13 @@ function Clock() {
     second: '2-digit',
   }).format(date) || <br />;
 
-  const stringDate = new Intl.DateTimeFormat('en-GB').format(date) || <br />;
+  const stringDate = new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+    .format(date)
+    .replaceAll('/', '.') || <br />;
 
   const stringDay = new Intl.DateTimeFormat('en-GB', {
     weekday: 'long',
